@@ -1,0 +1,22 @@
+# .htaccess
+#<Files ".env">
+    #Require all denied
+#</Files>
+# Activer le moteur de réécriture
+#RewriteEngine On
+
+# Base du répertoire du projet
+RewriteBase /archivai/
+
+# Rediriger la page d'accueil vers index.php
+#RewriteRule ^$ index.php [L]
+
+# Si le fichier ou dossier demandé n'existe pas physiquement
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rediriger toutes les autres requêtes vers index.php
+#RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# Gestion des erreurs
+#ErrorDocument 404 /archivai/index.php?error=404

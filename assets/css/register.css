@@ -1,0 +1,536 @@
+/* Styles généraux */
+:root {
+    --primary-color: #4e46e5;
+    --primary-gradient: linear-gradient(90deg, #4e46e5 0%, #7367f0 100%);
+    --secondary-color: #0f172a;
+    --text-color: #333;
+    --light-text: #64748b;
+    --background-color: #f8fafc;
+    --white: #ffffff;
+    --error-color: #ef4444;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
+    --danger-color: #ef4444; /* Ajout de cette variable pour compatibilité */
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header et navigation */
+.navbar {
+    background-color: var(--secondary-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.navbar-logo img {
+    height: 28px;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.navbar-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+    color: var(--primary-color);
+}
+
+.navbar-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Conteneur principal d'authentification */
+.auth-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.auth-card {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-logo {
+    width: 80px;
+    margin-bottom: 1.5rem;
+}
+
+.auth-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Formulaire */
+.auth-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.form-group {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 39px;
+    cursor: pointer;
+    color: var(--light-text);
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 1rem;
+}
+
+/* Conteneur pour les champs avec icônes */
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-container i {
+    position: absolute;
+    left: 10px;
+    color: var(--light-text);
+    font-size: 1rem;
+}
+
+.input-container input {
+    padding-left: 2.5rem; /* Ajoute un espace pour l'icône */
+}
+
+.input-container .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 1rem;
+    color: var(--light-text);
+    transition: color 0.3s ease;
+}
+
+.input-container .toggle-password:hover {
+    color: var(--primary-color);
+}
+
+.input-container .toggle-password i {
+    font-size: 1rem;
+}
+
+/* Positionnement des icônes de basculement */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px;
+    color: var(--light-text);
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+.input-icon-wrapper input {
+    padding-left: 2.5rem; /* Ajoute un espace pour l'icône */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--light-text);
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+}
+
+.toggle-password:hover {
+    color: var(--primary-color);
+}
+
+.error-message {
+    color: var(--error-color);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.error-message.global-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-left: 3px solid var(--error-color);
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+
+.feedback {
+    display: block;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    min-height: 1.2rem; /* Pour éviter que la page ne saute quand le message apparaît */
+}
+
+.feedback.success {
+    color: var(--success-color);
+}
+
+.feedback.error {
+    color: var(--error-color);
+}
+
+/* Indicateur de force du mot de passe */
+.password-strength {
+    margin-top: 0.5rem;
+}
+
+.strength-bar-container {
+    height: 5px;
+    background-color: #e2e8f0;
+    border-radius: 4px;
+    margin-top: 0.25rem;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0;
+    background-color: var(--error-color);
+    transition: width 0.5s ease, background-color 0.5s ease;
+}
+
+.strength-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+}
+
+.strength-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.password-criteria {
+    margin-top: 0.5rem;
+}
+
+.criteria-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0 0 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.criteria-item {
+    font-size: 0.8rem;
+    color: var(--light-text);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+.criteria-item.valid {
+    color: var(--success-color);
+}
+
+.criteria-item.invalid {
+    color: var(--light-text);
+}
+
+.criteria-item i {
+    font-size: 0.75rem;
+    transition: opacity 0.3s ease;
+}
+
+.valid i.fa-check {
+    display: inline;
+}
+
+.valid i.fa-times {
+    display: none;
+}
+
+.invalid i.fa-check {
+    display: none;
+}
+
+.invalid i.fa-times {
+    display: inline;
+}
+
+/* Alignement de la case à cocher et du lien "Mot de passe oublié" */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.checkbox-container input {
+    margin-right: 0.5rem;
+}
+
+.forgot-password-link {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password-link:hover {
+    color: #4e46e5;
+    text-decoration: underline;
+}
+
+/* Boutons */
+.btn {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: var(--white);
+    width: 100%;
+    margin-top: 1rem;
+    box-shadow: 0 4px 10px rgba(78, 70, 229, 0.25);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 15px rgba(78, 70, 229, 0.35);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(78, 70, 229, 0.1);
+}
+
+.btn:disabled, .btn.disabled {
+    background: #cbd5e1 !important; /* Gris clair */
+    color: #64748b !important; /* Texte gris foncé */
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 0.7;
+}
+
+.btn:disabled:hover, .btn.disabled:hover {
+    box-shadow: none !important;
+    transform: none !important;
+    background: #cbd5e1 !important;
+}
+
+/* Liens */
+.auth-links {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.auth-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 1.5rem;
+    }
+    
+    .navbar {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 1.25rem;
+    }
+    
+    .auth-title {
+        font-size: 1.25rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1.25rem;
+    }
+}
+
+.footer {
+    background-color: var(--secondary-color);
+    padding: 1.5rem 2rem;
+    color: var(--white);
+    margin-top: auto;
+    text-align: center; /* Centre le texte horizontalement */
+    display: flex; /* Active le flexbox */
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-copyright {
+    font-size: 0.9rem;
+    text-align: center;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Style supplémentaire pour le texte d'aide du mot de passe */
+.password-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--light-text);
+    margin-top: 0.3rem;
+}
+
+/* Animation des éléments */
+.auth-card, .btn, .form-group input {
+    transition: all 0.3s ease;
+}
+
+.auth-card:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation pour les vérifications */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.checking {
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Responsive pour le footer */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .footer-logo {
+        justify-content: center;
+    }
+}
