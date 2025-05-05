@@ -1,4 +1,3 @@
-# Ignorer le fichier .env
-.env
+# Ignorer le fichier
 .hintrc
 .vscode
