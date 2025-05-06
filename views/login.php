@@ -133,7 +133,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $errors['login'] = 'Votre compte n\'est pas actif. Veuillez vérifier votre email pour l\'activer ou contacter l\'assistance.';
                 } else {
                     // Authentification réussie
-                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['prenom'] = $user['prenoms']; // Assurez-vous que 'prenom' est une colonne dans votre table utilisateurs
+                    $_SESSION['user_id'] = $user['id']; // Stockez également l'ID utilisateur pour d'autres usages
                     $_SESSION['user_name'] = $user['prenoms'] . ' ' . $user['nom'];
                     $_SESSION['user_email'] = $user['email'];
                     
@@ -172,10 +173,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
-// Générer une nouvelle clé secrète
-$secret_key = base64_encode(random_bytes(32));
-//echo "Votre nouvelle SECRET_KEY : " . $secret_key;
 ?>
 
 <!DOCTYPE html>

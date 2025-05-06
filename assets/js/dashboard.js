@@ -1,110 +1,215 @@
-// Configuration de Toastr
-toastr.options = {
-    "closeButton": true,
-    "progressBar": true,
-    "positionClass": "toast-top-right",
-    "showDuration": "300",
-    "hideDuration": "1000",
-    "timeOut": "5000"
+// Données simulées
+const recentFiles = [
+    { id: 1, name: 'Facture EDF.pdf', type: 'facture', date: '03/05/2025', tags: ['énergie', 'mensuel'], score: 98 },
+    { id: 2, name: 'Carte Vitale.jpg', type: 'carte_identite', date: '01/05/2025', tags: ['santé'], score: 95 },
+    { id: 3, name: 'Bulletin de paie.pdf', type: 'facture', date: '30/04/2025', tags: ['revenu'], score: 99 },
+    { id: 4, name: 'Passeport.jpg', type: 'carte_identite', date: '28/04/2025', tags: ['voyage', 'identité'], score: 97 },
+    { id: 5, name: 'Contrat de bail.pdf', type: 'contrat', date: '25/04/2025', tags: ['logement'], score: 94 }
+];
+
+// Configuration des couleurs pour le mode nuit
+const getLightColors = () => {
+    return {
+        chartTextColor: '#1e293b',
+        distributionColors: ['#3b82f6', '#ec4899', '#10b981'],
+        activityColor: '#4f46e5',
+        gridColor: '#e2e8f0'
+    };
 };
 
-// Filtrer les documents par type
-function filterDocs(type) {
-    // Mettre à jour les boutons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    event.currentTarget.classList.add('active');
+const getDarkColors = () => {
+    return {
+        chartTextColor: '#e2e8f0',
+        distributionColors: ['#60a5fa', '#f472b6', '#34d399'],
+        activityColor: '#818cf8',
+        gridColor: '#334155'
+    };
+};
+
+// Charts globaux pour pouvoir les mettre à jour
+let fileDistributionChart, monthlyActivityChart;
+
+// Initialisation des graphiques
+const initCharts = () => {
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const colors = isDarkMode ? getDarkColors() : getLightColors();
     
-    // Filtrer les éléments
-    const items = document.querySelectorAll('#docBody .doc-item');
-    items.forEach(item => {
-        if (type === 'Tous' || item.getAttribute('data-type') === type) {
-            item.style.display = '';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-}
-
-// Visualiser un document
-function viewDocument(id) {
-    // Afficher le modal de chargement
-    $('#loadingModal').modal('show');
+    Chart.defaults.color = colors.chartTextColor;
+    Chart.defaults.borderColor = colors.gridColor;
     
-    // Simuler le chargement (à remplacer par une vraie requête AJAX)
-    setTimeout(() => {
-        $('#loadingModal').modal('hide');
-        
-        // Charger les détails du document (à remplacer par les vraies données)
-        $('#viewModalTitle').text('Document #' + id);
-        $('#viewModalBody').html(`
-            <div class="text-center">
-                <img src="api/document-preview.php?id=${id}" class="img-fluid mb-3" style="max-height: 400px;" alt="Aperçu du document">
-                <div class="document-details">
-                    <p><strong>Titre:</strong> Document ${id}</p>
-                    <p><strong>Description:</strong> Description du document ${id}</p>
-                    <p><strong>Date:</strong> 15/04/2025</p>
-                    <p><strong>Type:</strong> Facture</p>
-                </div>
-            </div>
-        `);
-        
-        $('#viewModal').modal('show');
-    }, 800);
-}
-
-// Modifier un document
-function editDocument(id) {
-    toastr.info('Fonctionnalité de modification en cours de développement');
-}
-
-// Supprimer un document
-function deleteDocument(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
-        // Ici, ajoutez votre code pour supprimer le document via AJAX
-        toastr.success('Document supprimé avec succès');
-        
-        // Simuler la suppression de la ligne
-        setTimeout(() => {
-            const row = document.querySelector(`#docBody .doc-item[data-id="${id}"]`);
-            if (row) row.remove();
-        }, 500);
-    }
-}
-
-// Initialisation
-document.addEventListener('DOMContentLoaded', function() {
-    // Si on a un message de succès dans l'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('success')) {
-        toastr.success('Opération réalisée avec succès !');
-    }
+    // Détruire les graphiques existants s'ils existent
+    if (fileDistributionChart) fileDistributionChart.destroy();
+    if (monthlyActivityChart) monthlyActivityChart.destroy();
     
-    // Si on a un message d'erreur dans l'URL
-    if (urlParams.has('error')) {
-        toastr.error('Une erreur est survenue.');
-    }
-
-    // Initialisation du graphique Doughnut
-    const ctx = document.getElementById('doughnutChart').getContext('2d');
-    const doughnutChart = new Chart(ctx, {
+    // Distribution des fichiers
+    const fileDistributionCtx = document.getElementById('fileDistributionChart').getContext('2d');
+    fileDistributionChart = new Chart(fileDistributionCtx, {
         type: 'doughnut',
         data: {
-            labels: ['Facture', 'Carte d\'identité', 'Extrait de naissance'],
+            labels: ['Factures', 'Cartes d\'identité', 'Contrats'],
             datasets: [{
-                data: [50, 35, 15],
-                backgroundColor: ['#e53935', '#1e88e5', '#43a047'],
-                hoverBackgroundColor: ['#d32f2f', '#1976d2', '#388e3c']
+                data: [65, 25, 10],
+                backgroundColor: colors.distributionColors,
+                borderWidth: 1
             }]
         },
         options: {
             responsive: true,
             plugins: {
                 legend: {
-                    position: 'bottom'
+                    position: 'bottom',
+                }
+            },
+            cutout: '70%'
+        }
+    });
+
+    // Activité mensuelle
+    const monthlyActivityCtx = document.getElementById('monthlyActivityChart').getContext('2d');
+    monthlyActivityChart = new Chart(monthlyActivityCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai'],
+            datasets: [{
+                label: 'Documents',
+                data: [4, 7, 5, 8, 12],
+                backgroundColor: colors.activityColor,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: colors.gridColor
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
                 }
             }
         }
     });
+};
+
+// Filtrage des fichiers
+const filterFiles = (filterType, searchText = '') => {
+    return recentFiles.filter(file => {
+        const matchesFilter = filterType === 'tous' || file.type === filterType;
+        const matchesSearch = file.name.toLowerCase().includes(searchText.toLowerCase());
+        return matchesFilter && matchesSearch;
+    });
+};
+
+// Affichage des fichiers
+const renderFiles = (files) => {
+    const container = document.getElementById('fileList');
+    if (!container) return;
+    
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const cardClass = isDarkMode ? 'bg-dark text-light' : 'bg-light';
+    
+    container.innerHTML = files.map(file => `
+        <div class="col-md-6 col-lg-4">
+            <div class="card ${cardClass} h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-file-${file.type === 'facture' ? 'invoice' : file.type === 'contrat' ? 'contract' : 'image'} me-3 fs-3 text-primary"></i>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0">${file.name}</h6>
+                            <small class="text-muted">${file.date}</small>
+                            <div class="mt-2">${file.tags.map(tag => `
+                                <span class="badge bg-info me-1">${tag}</span>
+                            `).join('')}</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                        <span class="badge bg-success">IA ${file.score}%</span>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+};
+
+// Gestion du mode nuit
+const toggleTheme = () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    
+    // Changer l'icône
+    const themeBtns = document.querySelectorAll('.btn-toggle-theme');
+    themeBtns.forEach(btn => {
+        btn.innerHTML = document.body.classList.contains('dark-mode') 
+            ? '<i class="fas fa-sun"></i>' 
+            : '<i class="fas fa-moon"></i>';
+    });
+    
+    // Mettre à jour les graphiques
+    initCharts();
+    
+    // Mettre à jour la liste des fichiers
+    renderFiles(recentFiles);
+};
+
+// Au chargement
+document.addEventListener('DOMContentLoaded', () => {
+    // Vérifier le mode enregistré
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' && !document.body.classList.contains('dark-mode')) {
+        document.body.classList.add('dark-mode');
+    } else if (savedTheme === 'light' && document.body.classList.contains('dark-mode')) {
+        document.body.classList.remove('dark-mode');
+    }
+    
+    // Appliquer l'icône correcte selon le thème
+    const themeBtns = document.querySelectorAll('.btn-toggle-theme');
+    themeBtns.forEach(btn => {
+        btn.innerHTML = document.body.classList.contains('dark-mode') 
+            ? '<i class="fas fa-sun"></i>' 
+            : '<i class="fas fa-moon"></i>';
+    });
+    
+    // Ajouter les écouteurs d'événements pour les boutons de bascule
+    document.querySelectorAll('.btn-toggle-theme').forEach(btn => {
+        btn.addEventListener('click', toggleTheme);
+    });
+
+    // Initialisation des graphiques
+    const fileDistributionChartEl = document.getElementById('fileDistributionChart');
+    const monthlyActivityChartEl = document.getElementById('monthlyActivityChart');
+
+    if (fileDistributionChartEl && monthlyActivityChartEl) {
+        initCharts();
+    } else {
+        console.error('Les éléments du graphique ne sont pas trouvés.');
+    }
+
+    // Affichage des fichiers récents
+    renderFiles(recentFiles);
+
+    // Gestion de la recherche
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const filtered = filterFiles('tous', e.target.value);
+            renderFiles(filtered);
+        });
+    }
+    
+    // Animation d'entrée pour la caméra flottante
+    const floatingCamera = document.querySelector('.floating-camera');
+    if (floatingCamera) {
+        setTimeout(() => {
+            floatingCamera.style.animation = 'fadeIn 0.5s ease-out forwards';
+        }, 1000);
+    }
 });
