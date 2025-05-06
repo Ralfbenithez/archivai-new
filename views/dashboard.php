@@ -99,13 +99,13 @@ $prenom = isset($_SESSION['prenom']) && !empty($_SESSION['prenom']) ? $_SESSION[
                     <p>GO</p>
                 </div>
                 <div class="info-card green">
-                    <h2>97%</h2>
-                    <p>Précision IA</p>
+                    <h2>19</h2>
+                    <p>Catégories de Fichiers</p>
                 </div>
             </div>
             <div class="charts">
                 <div class="chart-container">
-                    <h5 class="mb-3">Distribution des fichiers</h5>
+                    <h5 class="mb-3">Statistique des fichiers</h5>
                     <canvas id="fileDistributionChart"></canvas>
                 </div>
                 <div class="chart-container">
@@ -128,9 +128,12 @@ $prenom = isset($_SESSION['prenom']) && !empty($_SESSION['prenom']) ? $_SESSION[
     <div class="floating-camera">
         <i class="fas fa-camera"></i>
     </div>
-
     <footer class="footer">
-        <div class="container text-center">&copy; 2025 ArchivAI. Tous droits réservés.</div>
+        <div class="footer-content">
+            <div class="footer-copyright">
+                &copy; 2025 ArchivAI. Tous droits réservés.
+            </div>
+        </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

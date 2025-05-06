@@ -1,7 +1,7 @@
 :root {
     --primary-color: #4f46e5;
     --primary-light: #6366f1;
-    --secondary-color: #0ea5e9;
+    --secondary-color: #0f172a;
     --accent-color: #8b5cf6;
     --text-color: #1e293b;
     --light-bg: #f8fafc;
@@ -350,13 +350,22 @@ body.dark-mode .btn-toggle-theme {
 }
 
 .footer {
-    background-color: #f8fafc;
-    color: var(--text-color);
-    padding: 15px 0;
+    background-color: var(--secondary-color);
+    padding: 1.5rem 2rem;
+    color: var(--white);
+    margin-top: auto;
     text-align: center;
-    border-top: 1px solid var(--border-color);
 }
 
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-copyright {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
 /* Animation */
 @keyframes fadeIn {
     from {
